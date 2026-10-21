@@ -18,15 +18,17 @@
 # Program requirements: 
 #	samtools
 #	bedtools
-#	bedGraphToBigWig (USCSC)
+#	bedGraphToBigWig (available as part of UCSC Genome Browser utilities: https://hgdownload.soe.ucsc.edu/admin/exe)
 #	Modification to direct program to appropriate directory; directory should contain two new folders named "tracks" and "bigwig"
+#	Genome Table file with chromosome name(s) and lengths; required for bedGraphToBigWig file
 
 # Usage: ./bamtobigwig.sh experimentA experimentB
 
 for f in *.bam ;
 do
 	REP=$1 	#Set the prefix to the first argument
-	DIRPATH=~/../../Volumes/DoveExternalMG/202001_AML_RNASEQ_bigwig/mvaUT_pilY1/ # Define working directory
+	DIRPATH= ### Define working directory ###
+	GENPATH= ### Path to genome table text file for bedGraphToBigWig script
 	
 	echo "> Sorting bam file:" $REP		## Can include for debugging/monitoring progress
 	
@@ -39,8 +41,8 @@ do
 	
 	echo ">>> Converting bedgraph files to bigwig format for" $REP		## Can include for debugging/monitoring progress
 	
-	~/coding/bedGraphToBigWig $DIRPATH/tracks/$REP\_plus.bedGraph ~/Genome_Files/PAO1/PAO1_genomeTable.txt $DIRPATH/bigwig/$REP"_plus.bw"	# convert plus reads to bigwig format
-	~/coding/bedGraphToBigWig $DIRPATH/tracks/$REP\_minus.bedGraph ~/Genome_Files/PAO1/PAO1_genomeTable.txt $DIRPATH/bigwig/$REP"_minus.bw"	# convert minus reads to bigwig format
+	~/coding/bedGraphToBigWig $DIRPATH/tracks/$REP\_plus.bedGraph $GENPATH $DIRPATH/bigwig/$REP"_plus.bw"	# convert plus reads to bigwig format
+	~/coding/bedGraphToBigWig $DIRPATH/tracks/$REP\_minus.bedGraph $GENPATH $DIRPATH/bigwig/$REP"_minus.bw"	# convert minus reads to bigwig format
 	
 	echo ">>>> Removing intermediate files"		## Can include for debugging/monitoring progress
 
